@@ -1,0 +1,82 @@
+openapi: 3.0.0
+info:
+  title: File Serving API
+  description: API to serve files as text from a specified directory.
+  version: 1.0.0
+servers:
+  - url: https://learning-beagle-saving.ngrok-free.app
+    description: Local server hosting the file serving API
+paths:
+  /{filepath}:
+    get:
+      operationId: getFileAsText
+      summary: Retrieves a file as plain text.
+      parameters:
+        - in: path
+          name: filepath
+          required: true
+          description: Path to the file to be served.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: File content served as plain text.
+          content:
+            text/plain:
+              schema:
+                type: string
+        "404":
+          description: File not found.
+  /gitGrep:
+    get:
+      operationId: gitGrep
+      summary: Search using git grep -i 'search'
+      parameters:
+        - in: query
+          name: search
+          required: true
+          description: Query string for searching file contents.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Files matching the search query.
+          content:
+            text/plain:
+              schema:
+                type: string
+        "404":
+          description: No files found matching the search query.
+  /gitDiff:
+    get:
+      operationId: gitDiff
+      summary: Show results of git diff
+      responses:
+        "200":
+          description: Output of the command
+          content:
+            text/plain:
+              schema:
+                type: string
+        "404":
+          description: Something went wrong
+  /gitLsFiles:
+    get:
+      operationId: gitLsFiles
+      summary: Show results of git ls-files '*search*' (to search for files by name or directory)
+      parameters:
+        - in: query
+          name: search
+          required: true
+          description: Query string for searching file names.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Output of the command
+          content:
+            text/plain:
+              schema:
+                type: string
+        "404":
+          description: Something went wrong
